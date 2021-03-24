@@ -36,16 +36,22 @@ public class FlipCard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isCardPressed)
+        if (isCardPressed && !isFlipped)
         {
             gameObject.GetComponent<Button>().interactable = false;
-            if (gameObject.transform.rotation.y > -1)
-            //if (Mathf.Approximately(gameObject.transform.rotation.y, -1) )
-            //if (gameObject.transform.rotation.eulerAngles.y < 180)
+            //if (gameObject.transform.rotation.y > -1)
+            ////if(Mathf.DeltaAngle(gameObject.transform.rotation.y, targetRotation.y) > 0.1)
+            ////if (gameObject.transform.rotation.eulerAngles.y < 180)
+            //{
+            //    //transform.RotateAround(transform.position, Vector3.up, rotationSpeed * Time.deltaTime);
+            //    RotateCard();
+            //    //Debug.Log("Flipped: " + Quaternion.Angle(gameObject.transform.rotation, targetRotation));
+
+            //    //Debug.Log(gameObject.transform.rotation.y);
+            //}
+            if (Quaternion.Angle(gameObject.transform.rotation, targetRotation) > 0)
             {
-                //transform.RotateAround(transform.position, Vector3.up, rotationSpeed * Time.deltaTime);
                 RotateCard();
-                //Debug.Log(gameObject.transform.rotation.y);
             }
             else
             {
@@ -53,7 +59,8 @@ public class FlipCard : MonoBehaviour
                 isCardPressed = false;
             }
 
-            if (gameObject.transform.rotation.y <= -0.5)
+            //if (gameObject.transform.rotation.y <= -0.5)
+            if (Quaternion.Angle(gameObject.transform.rotation, targetRotation) < 90)
             {
                 ColorBlock flippedButtonColor = gameObject.GetComponent<Button>().colors;
                 flippedButtonColor = flippedColorBlock;
@@ -67,34 +74,37 @@ public class FlipCard : MonoBehaviour
         if (flipFaceDown)
         {
             //Debug.Log("Angle Difference: " + Quaternion.Angle(gameObject.transform.rotation, targetRotation));
-            if (gameObject.transform.rotation.y < 0)
-            //if (gameObject.transform.rotation.eulerAngles.y > 0)
-            {
-                RotateCard();
-                //Debug.Log(gameObject.transform.rotation.eulerAngles.y + " | " + Mathf.Round(gameObject.transform.rotation.y));
-            }
-            else
-            {
-                isFlipped = false;
-                flipFaceDown = false;
-                gameObject.GetComponent<Button>().interactable = true;
-                Debug.Log("Not flipped");
-            }
-
-            /*Debugging*/
-            //if (Quaternion.Angle(gameObject.transform.rotation, targetRotation) < 0)  // -> Try using Mathf.DeltaAngle and just getting the y rotation
+            //if (gameObject.transform.rotation.y < 0)
+            ////if (gameObject.transform.rotation.eulerAngles.y > 0)
             //{
             //    RotateCard();
+            //    //Debug.Log(gameObject.transform.rotation.eulerAngles.y + " | " + Mathf.Round(gameObject.transform.rotation.y));
             //}
             //else
             //{
-            //    Debug.Log("Set up the face down state");
             //    isFlipped = false;
             //    flipFaceDown = false;
             //    gameObject.GetComponent<Button>().interactable = true;
+            //    Debug.Log("Not flipped");
             //}
 
-            if (gameObject.transform.rotation.y <= 0.5)
+            /*Debugging*/
+            if (Quaternion.Angle(gameObject.transform.rotation, targetRotation) > 0)  // -> Try using Mathf.DeltaAngle and just getting the y rotation
+            //if(Mathf.DeltaAngle(gameObject.transform.rotation.y, targetRotation.y) > 0)
+            {
+                RotateCard();
+                Debug.Log(Quaternion.Angle(gameObject.transform.rotation, targetRotation));
+            }
+            else
+            {
+                Debug.Log("Set up the face down state");
+                isFlipped = false;
+                flipFaceDown = false;
+                gameObject.GetComponent<Button>().interactable = true;
+            }
+
+            //if (gameObject.transform.rotation.y <= 0.5)
+            if(Quaternion.Angle(gameObject.transform.rotation, targetRotation) < 90)
             {
                 ColorBlock unFlippedButtonColor = gameObject.GetComponent<Button>().colors;
                 unFlippedButtonColor = unFlippedColorBlock;
@@ -108,14 +118,16 @@ public class FlipCard : MonoBehaviour
         //Debug.Log(gameObject.transform.eulerAngles.y);
         //Debug.Log(Mathf.Ceil(gameObject.transform.rotation.y));
         //Debug.Log(transform.rotation);
+        //Debug.Log(Quaternion.Angle(gameObject.transform.rotation, targetRotation));
     }
 
     public void CardPressed()
     {
         isCardPressed = true;
         //targetRotation = transform.eulerAngles + 180.0f * Vector3.up;
-        //targetRotation = new Vector3(0.0f, 180.0f, 0.0f);
-        targetRotation = new Quaternion(0.0f, -1.0f, 0.0f, 0.0f);
+        Vector3 newRotation = new Vector3(0.0f, 180.0f, 0.0f);
+        targetRotation = Quaternion.Euler(newRotation);
+        //targetRotation = new Quaternion(0.0f, -1.0f, 0.0f, 0.0f);
         //Debug.Log(targetRotation);
         if (!isFlipped)
         {
@@ -126,8 +138,9 @@ public class FlipCard : MonoBehaviour
 
     public void FlipCardFaceDown()
     {
-        //targetRotation = new Vector3(0.0f, 0.0f, 0.0f);
-        targetRotation = Quaternion.identity;
+        Vector3 newRotation = new Vector3(0.0f, 0.0f, 0.0f);
+        targetRotation = Quaternion.Euler(newRotation);
+        //targetRotation = Quaternion.identity;
         //targetRotation = new Quaternion(0.0f, 1.0f, 0.0f, 0.0f);
         flipFaceDown = true;
     }
