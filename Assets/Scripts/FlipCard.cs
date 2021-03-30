@@ -19,6 +19,9 @@ public class FlipCard : MonoBehaviour
     [Space(10)]
 
     public FlipCardManager flipCardManager;
+    public int cardID { get; set; }
+
+    public Text cardText;
 
     //private Vector3 targetRotation;
     private Quaternion targetRotation;
@@ -31,6 +34,9 @@ public class FlipCard : MonoBehaviour
         isFlipped = false;
         flipFaceDown = false;
         flipCardManager = GameObject.FindObjectOfType<FlipCardManager>();
+        
+        cardText = gameObject.GetComponentInChildren<Text>();
+        cardText.text = cardID.ToString();
     }
 
     // Update is called once per frame
@@ -93,7 +99,7 @@ public class FlipCard : MonoBehaviour
             //if(Mathf.DeltaAngle(gameObject.transform.rotation.y, targetRotation.y) > 0)
             {
                 RotateCard();
-                Debug.Log(Quaternion.Angle(gameObject.transform.rotation, targetRotation));
+                //Debug.Log(Quaternion.Angle(gameObject.transform.rotation, targetRotation));
             }
             else
             {
