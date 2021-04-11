@@ -103,7 +103,7 @@ public class FlipCard : MonoBehaviour
             }
             else
             {
-                Debug.Log("Set up the face down state");
+                //Debug.Log("Set up the face down state");
                 isFlipped = false;
                 flipFaceDown = false;
                 gameObject.GetComponent<Button>().interactable = true;
@@ -129,6 +129,10 @@ public class FlipCard : MonoBehaviour
 
     public void CardPressed()
     {
+        if (flipCardManager.pickedCards.Count + 1 > flipCardManager.GetMaxNumPickedCards)
+        {
+            return;
+        }
         isCardPressed = true;
         //targetRotation = transform.eulerAngles + 180.0f * Vector3.up;
         Vector3 newRotation = new Vector3(0.0f, 180.0f, 0.0f);

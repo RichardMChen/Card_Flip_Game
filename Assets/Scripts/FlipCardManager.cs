@@ -16,7 +16,7 @@ public class FlipCardManager : MonoBehaviour
 
     [SerializeField]
     private List<FlipCard> cardsInPlay = new List<FlipCard>();
-    
+
     [SerializeField]
     private List<int> cardIDList = new List<int>();
 
@@ -29,7 +29,7 @@ public class FlipCardManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void AddCardToList(FlipCard cardToAdd)
@@ -77,27 +77,33 @@ public class FlipCardManager : MonoBehaviour
     {
         //if (pickedCards.Count >= maxNumPickedCards)
         //{
-            foreach (FlipCard card in cardsInPlay)
+        foreach (FlipCard card in cardsInPlay)
+        {
+            for (int i = 0; i < pickedCards.Count; i++)
             {
-                for (int i = 0; i < pickedCards.Count; i++)
+                if (card == pickedCards[i])
                 {
-                    if (card == pickedCards[i])
-                    {
-                        card.FlipCardFaceDown();
-                    }
+                    card.FlipCardFaceDown();
                 }
-                card.gameObject.GetComponent<Button>().interactable = true;
             }
+            card.gameObject.GetComponent<Button>().interactable = true;
+        }
         //}
 
         pickedCards.Clear();
     }
-    
-    public int MaxNumPickedCards
+
+    public int GetMaxNumPickedCards
     {
         get
         {
             return maxNumPickedCards;
         }
     }
+
+    // Function to return whether the maximum number of cards have been picked
+    //public bool HasMaxNumCardsBeenPicked()
+    //{
+    //    return pickedCards.Count == maxNumPickedCards;
+    //}
 }

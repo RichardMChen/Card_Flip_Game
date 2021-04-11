@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   totalNumCardsInPlay: 10
   pickedCards: []
-  maxNumPickedCards: 2
+  maxNumPickedCards: 3
   cardGroup: {fileID: 2019288376}
   cardPrefab: {fileID: 830023378016682646, guid: de17fd6e445682c4b9e7c34473089f85, type: 3}
   cardsInPlay: []
